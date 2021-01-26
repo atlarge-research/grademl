@@ -1,4 +1,16 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+
+
 # Project-specific exclusions
 # experiments
 /experiments/*/env
 /experiments/*/logs
+# resource-monitor
+/src/resource-monitor/bin/
