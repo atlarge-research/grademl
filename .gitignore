@@ -1,0 +1,4 @@
+# Project-specific exclusions
+# experiments
+/experiments/*/env
+/experiments/*/logs
