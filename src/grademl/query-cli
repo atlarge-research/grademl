@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+# Get path of GradeML repository
+GRADEML_ROOT="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")"
+
+# Use Gradle :installDist to ensure the query engine binaries are up-to-date
+echo "Compiling GradeML Query Engine to ensure it is up-to-date."
+gradle_output=$("$GRADEML_ROOT/gradlew" --no-daemon --console=plain :grademl-query:installDist 2>&1)
+if [[ $? -ne 0 ]]; then
+    echo
+    echo "Gradle compilation failed!" >&2
+    echo
+    echo "$gradle_output"
+    exit 1
+fi
+echo
+
+export GRADEML_QUERY_OPTS="-Xmx4g"
+# Uncomment for remote debugging of GradeML
+#export GRADEML_QUERY_OPTS="$GRADEML_QUERY_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5015"
+
+# Start the GradeML Query Engine
+"$GRADEML_ROOT/grademl-query/build/install/grademl-query/bin/grademl-query" "$@"
